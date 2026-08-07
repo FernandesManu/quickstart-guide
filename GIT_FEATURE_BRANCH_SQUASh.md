@@ -1,14 +1,14 @@
-Jamais faça commits do tipo merge padrão ("standard merge", ex.: "git merge main"), já que o tal:
+Never use standard merge commits (e.g., git merge main), because they:
 
-- Polui o histórico do Git ao criar commits de merge que agregam múltiplas alterações, dificultando entender onde cada modificação foi feita.
-- Aumenta o risco de mudanças desnecessárias serem incorporadas ao main, já que podem passar despercebidas durante a revisão de pull requests por estarem diluídas em múltiplos commits.
-- Dificulta reverter o projeto para o último estado funcional, pois não há garantias de que cada merge padrão aponte para um commit específico do main, algo difícil de identificar durante a revisão de pull requests.
+- Pollute the Git history by creating merge commits that combine multiple changes, making it harder to identify where each modification was introduced.
+- Increase the risk of unnecessary changes being merged into main, since they can go unnoticed during pull request reviews when spread across multiple commits.
+- Make it more difficult to roll back the project to the last known working state, as there is no guarantee that each standard merge points to a specific commit from main, making it harder to identify during pull request reviews.
 
-Em seu lugar, use apenas commits merge fast-forward da seguinte forma:
+Instead, use fast-forward merges by following the steps below.
 
-01.0 - Deixe seu feature branch com um só commit, uma vez que você terá que resolver conflitos para cada commit divergente do main em seu feature branch, ou seja, terá que resolver conflitos para cada commit presente em seu feature branch:
+01.0 - Keep your feature branch to a single commit, since you would otherwise need to resolve conflicts for every commit in your feature branch that diverges from main.
 
-01.1 - Confirme que a cópia local do seu feature branch está atualizada:
+01.1 - Make sure your local feature branch is up to date:
 
 ```bash
 FEATURE_BRANCH=
@@ -21,39 +21,39 @@ git checkout $FEATURE_BRANCH
 git pull
 ```
 
-01.2 - Identifique o commit base do branch (de onde a branch divergiu):
+01.2 - Find the branch's base commit (the point where it diverged from main):
 
 ```bash
 BASE_COMMIT=$(git merge-base $FEATURE_BRANCH $BASE_BRANCH)
 ```
 
-01.3 - Faça manualmente um backup em ZIP da pasta do repositório, uma vez que os comandos a seguir são irreversíveis.
+01.3 - The following commands are irreversible, so create a ZIP backup of the repository folder before continuing.
 
-01.4 - Faça um soft reset do feature branch (delete os commits, mas mantenha a alteração resultante deles na área "unstaged changes" do git):
+01.4 - Perform a soft reset of the feature branch (delete the commits, but keep the changes resulting from them in Git's "unstaged changes" area).:
 
 ```bash
 git reset --soft $BASE_COMMIT
 ```
 
-01.6 - Limpe seu STASH:
+01.6 - Clear your stash:
 
 ```bash
 git stash clear
 ```
 
-01.7 - Salve as alterações no STASH:
+01.7 - Save your changes to the stash:
 
 ```bash
 git add . && git stash
 ```
 
-02.0 - Execute o merge do tipo fast-forward para atualizar seu feature branch ao main remoto:
+02.0 - Fast-forward your feature branch to the latest remote main:
 
 ```bash
 git pull --rebase origin main
 ```
 
-02.1 - Aplique as alterações salvas no STASH e resolva os eventuais conflitos (vide [06.1] para resolução através da interface do VSCode)
+02.1 - Apply the stashed changes and resolve any merge conflicts (See [06.1] for resolving conflicts using the VS Code interface.)
 
 ```bash
 git stash apply
@@ -61,13 +61,13 @@ git stash apply
 
 [06.1] https://www.youtube.com/watch?v=anykEUKy51U
 
-03.0 - Crie um único commit cujo título seja o nome do feature branch:
+03.0 - Create a single commit.Use the feature branch name as the commit message:
 
 ```bash
 git add . && git commit -m $FEATURE_BRANCH
 ```
 
-04.0 - Deixe o feature branch remoto com um só commit para facilitar a análise de PRs e evitar futuras resoluções de conflitos redundantes:
+04.0 - Keep the remote feature branch with only one commit. This simplifies pull request reviews and helps prevent redundant conflict resolution in the future:
 
 ```bash
 if [[ -z "$FEATURE_BRANCH" ]]; then
