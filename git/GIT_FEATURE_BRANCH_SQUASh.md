@@ -6,6 +6,14 @@ Never use standard merge commits (e.g., git merge main), because they:
 
 Instead, use fast-forward merges by following the steps below.
 
+0.0 - Avoiding conflicts
+
+0.1 — Back up your branch
+
+```bash
+git checkout -b backup/[your branch]
+```
+
 01.0 - Keep your feature branch to a single commit, since you would otherwise need to resolve conflicts for every commit in your feature branch that diverges from main.
 
 01.1 - Make sure your local feature branch is up to date:
