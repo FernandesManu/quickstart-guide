@@ -8,20 +8,22 @@ Instead, use fast-forward merges by following the steps below.
 
 0.0 - Avoiding conflicts
 
-0.1 — Back up your branch
+0.1 — [See how to do a commit and push](GIT_COMMIT_PUSH.md)
+
+0.2 — Back up your branch
 
 ```bash
 git checkout -b "backup/[your branch]"
 ```
 
-0.2 — Switch to the main branch and update it
+0.3 — Switch to the main branch and update it
 
 ```bash
 git checkout main
 git pull
 ```
 
-0.3 — Switch back to your branch
+0.4 — Switch back to your branch
 
 ```bash
 git checkout [your branch]
