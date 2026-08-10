@@ -11,7 +11,20 @@ Instead, use fast-forward merges by following the steps below.
 0.1 — Back up your branch
 
 ```bash
-git checkout -b backup/[your branch]
+git checkout -b "backup/[your branch]"
+```
+
+0.2 — Switch to the main branch and update it
+
+```bash
+git checkout main
+git pull
+```
+
+0.3 — Switch back to your branch
+
+```bash
+git checkout [your branch]
 ```
 
 01.0 - Keep your feature branch to a single commit, since you would otherwise need to resolve conflicts for every commit in your feature branch that diverges from main.
